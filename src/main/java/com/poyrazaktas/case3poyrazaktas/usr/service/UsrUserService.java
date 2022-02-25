@@ -2,6 +2,7 @@ package com.poyrazaktas.case3poyrazaktas.usr.service;
 
 import com.poyrazaktas.case3poyrazaktas.gen.exception.ItemNotFoundException;
 import com.poyrazaktas.case3poyrazaktas.usr.converter.UsrUserMapper;
+import com.poyrazaktas.case3poyrazaktas.usr.dto.UsrUserDeleteReqDto;
 import com.poyrazaktas.case3poyrazaktas.usr.dto.UsrUserDto;
 import com.poyrazaktas.case3poyrazaktas.usr.dto.UsrUserSaveReqDto;
 import com.poyrazaktas.case3poyrazaktas.usr.dto.UsrUserUpdateReqDto;
@@ -47,9 +48,22 @@ public class UsrUserService {
         return UsrUserMapper.INSTANCE.convertToUserDto(user);
     }
 
-    public void delete(Long id){
+    public void delete(Long id, UsrUserDeleteReqDto userDeleteReqDto){
         UsrUser user = userEntityService.findById(id).orElseThrow(()-> new ItemNotFoundException("User not found!"));
+        checkIfUserPhoneIsMatches(user,userDeleteReqDto);
         userEntityService.delete(user);
+
+    }
+
+    private void checkIfUserPhoneIsMatches(UsrUser user,UsrUserDeleteReqDto userDeleteReqDto) {
+        if(!user.getPhone().equals(userDeleteReqDto.getPhone())){
+            throw new RuntimeException(String.format("%s kullanıcı adı ile %s telefon bilgileri uyuşmamaktadır.", userDeleteReqDto.getUserName(),userDeleteReqDto.getPhone()));
+        }
+    }
+
+    public UsrUserDto findByUserName(String userName){
+        UsrUser user = userEntityService.findByUserName(userName).orElseThrow(()-> new ItemNotFoundException("User not found!"));
+        return UsrUserMapper.INSTANCE.convertToUserDto(user);
     }
 
 }

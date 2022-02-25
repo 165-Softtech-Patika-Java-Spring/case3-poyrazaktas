@@ -1,6 +1,7 @@
 package com.poyrazaktas.case3poyrazaktas.prd.controller;
 
 import com.poyrazaktas.case3poyrazaktas.prd.dto.PrdProductDto;
+import com.poyrazaktas.case3poyrazaktas.prd.dto.PrdProductPriceDto;
 import com.poyrazaktas.case3poyrazaktas.prd.dto.PrdProductSaveReqDto;
 import com.poyrazaktas.case3poyrazaktas.prd.dto.PrdProductUpdateReqDto;
 import com.poyrazaktas.case3poyrazaktas.prd.service.PrdProductService;
@@ -35,6 +36,11 @@ public class PrdProductController {
     @PutMapping("/update")
     public ResponseEntity<PrdProductDto> update(@RequestBody PrdProductUpdateReqDto productUpdateReqDto){
         return ResponseEntity.ok(productService.update(productUpdateReqDto));
+    }
+
+    @PatchMapping("/updatePrice/{id}")
+    public ResponseEntity<PrdProductDto> updatePrice(@PathVariable Long id, @RequestBody PrdProductPriceDto productPriceDto){
+        return ResponseEntity.ok(productService.updatePrice(id,productPriceDto));
     }
 
     @DeleteMapping("/delete/{id}")
