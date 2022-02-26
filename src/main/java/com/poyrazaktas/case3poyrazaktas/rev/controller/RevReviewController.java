@@ -22,6 +22,16 @@ public class RevReviewController {
         return ResponseEntity.ok(reviewService.findAll());
     }
 
+    @GetMapping("/findAllByUserId/{userId}")
+    public ResponseEntity<List<RevReviewDto>> findAllByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok(reviewService.findAllByUserId(userId));
+    }
+
+    @GetMapping("/findAllByProductId/{productId}")
+    public ResponseEntity<List<RevReviewDto>> findAllByProductId(@PathVariable Long productId){
+        return ResponseEntity.ok(reviewService.findAllByProductId(productId));
+    }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<RevReviewDto> get(@PathVariable Long id){
         return ResponseEntity.ok(reviewService.get(id));
