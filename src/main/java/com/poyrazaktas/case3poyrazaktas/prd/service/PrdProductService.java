@@ -7,6 +7,7 @@ import com.poyrazaktas.case3poyrazaktas.prd.dto.PrdProductPriceDto;
 import com.poyrazaktas.case3poyrazaktas.prd.dto.PrdProductSaveReqDto;
 import com.poyrazaktas.case3poyrazaktas.prd.dto.PrdProductUpdateReqDto;
 import com.poyrazaktas.case3poyrazaktas.prd.entity.PrdProduct;
+import com.poyrazaktas.case3poyrazaktas.prd.enums.PrdProductErrorMessage;
 import com.poyrazaktas.case3poyrazaktas.prd.service.entityservice.PrdProductEntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class PrdProductService {
     }
 
     public PrdProductDto get(Long id){
-        PrdProduct product = productEntityService.findById(id).orElseThrow(()-> new ItemNotFoundException("Product not found!"));
+        PrdProduct product = productEntityService.findById(id).orElseThrow(()-> new ItemNotFoundException(PrdProductErrorMessage.ITEM_NOT_FOUND));
         return PrdProductMapper.INSTANCE.convertToProductDto(product);
     }
 
@@ -41,12 +42,12 @@ public class PrdProductService {
     }
 
     public void delete(Long id){
-        PrdProduct product = productEntityService.findById(id).orElseThrow(()->new ItemNotFoundException("Product not found!"));
+        PrdProduct product = productEntityService.findById(id).orElseThrow(()->new ItemNotFoundException(PrdProductErrorMessage.ITEM_NOT_FOUND));
         productEntityService.delete(product);
     }
 
     public PrdProductDto updatePrice(Long id, PrdProductPriceDto productPriceDto) {
-        PrdProduct product = productEntityService.findById(id).orElseThrow(()->new ItemNotFoundException("Product not found!"));
+        PrdProduct product = productEntityService.findById(id).orElseThrow(()->new ItemNotFoundException(PrdProductErrorMessage.ITEM_NOT_FOUND));
         product.setPrice(productPriceDto.getPrice());
         product = productEntityService.save(product);
         return PrdProductMapper.INSTANCE.convertToProductDto(product);

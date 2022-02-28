@@ -8,6 +8,7 @@ import com.poyrazaktas.case3poyrazaktas.rev.dto.RevReviewDto;
 import com.poyrazaktas.case3poyrazaktas.rev.dto.RevReviewSaveReqDto;
 import com.poyrazaktas.case3poyrazaktas.rev.dto.RevReviewUpdateReqDto;
 import com.poyrazaktas.case3poyrazaktas.rev.entity.RevReview;
+import com.poyrazaktas.case3poyrazaktas.rev.enums.RevReviewErrorMessage;
 import com.poyrazaktas.case3poyrazaktas.rev.service.entityservice.RevReviewEntityService;
 import com.poyrazaktas.case3poyrazaktas.usr.dto.UsrUserDto;
 import com.poyrazaktas.case3poyrazaktas.usr.service.UsrUserService;
@@ -43,7 +44,7 @@ public class RevReviewService {
     }
 
     public RevReviewDto get(Long id) {
-        RevReview review = reviewEntityService.findById(id).orElseThrow(() -> new ItemNotFoundException("Review Not Found!"));
+        RevReview review = reviewEntityService.findById(id).orElseThrow(() -> new ItemNotFoundException(RevReviewErrorMessage.ITEM_NOT_FOUND));
         return RevReviewMapper.INSTANCE.convertToReviewDto(review);
     }
 
@@ -61,19 +62,19 @@ public class RevReviewService {
     }
 
     public void delete(Long id) {
-        RevReview review = reviewEntityService.findById(id).orElseThrow(() -> new ItemNotFoundException("Review not found!"));
+        RevReview review = reviewEntityService.findById(id).orElseThrow(() -> new ItemNotFoundException(RevReviewErrorMessage.ITEM_NOT_FOUND));
         reviewEntityService.delete(review);
     }
 
     private void checkIfUserReviewsIsEmpty(List<RevReview> reviewList, UsrUserDto usrUserDto) {
         if (reviewList.isEmpty()) {
-            throw new ItemNotFoundException(String.format("%s adlı kullanıcı henüz yorum yapmamıştır.", usrUserDto.getUserName()));
+            throw new RuntimeException(String.format("%s adlı kullanıcı henüz yorum yapmamıştır.", usrUserDto.getUserName()));
         }
     }
 
     private void checkIfProductReviewsIsEmpty(List<RevReview> reviewList, PrdProductDto prdProductDto) {
         if (reviewList.isEmpty()) {
-            throw new ItemNotFoundException(String.format("%s adlı ürüne henüz yorum yapılmamıştır.", prdProductDto.getName()));
+            throw new RuntimeException(String.format("%s adlı ürüne henüz yorum yapılmamıştır.", prdProductDto.getName()));
         }
     }
 }

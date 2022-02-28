@@ -16,19 +16,19 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public final ResponseEntity<Object> handleUnhandledExceptions(Exception ex, WebRequest webRequest){
-        CustomExceptionResponse customExceptionResponse = getCustomExceptionResponse(ex, webRequest);
+        CustomExceptionResponse customExceptionResponse = getCustomExceptionResponse(ex.getMessage(), webRequest);
         return new ResponseEntity<>(customExceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     public final ResponseEntity<Object> handleItemNotFoundException(ItemNotFoundException ex, WebRequest webRequest){
-        CustomExceptionResponse customExceptionResponse = getCustomExceptionResponse(ex, webRequest);
+        CustomExceptionResponse customExceptionResponse = getCustomExceptionResponse(ex.getErrorMessage().getMessage(), webRequest);
         return new ResponseEntity<>(customExceptionResponse,HttpStatus.NOT_FOUND);
     }
 
-    private CustomExceptionResponse getCustomExceptionResponse(Exception ex, WebRequest webRequest) {
+    private CustomExceptionResponse getCustomExceptionResponse(String errorMessage, WebRequest webRequest) {
         Date date = new Date();
-        String message = ex.getMessage();
+        String message = errorMessage;
         String description = webRequest.getDescription(false);
 
         CustomExceptionResponse customExceptionResponse = new CustomExceptionResponse(date, message, description);

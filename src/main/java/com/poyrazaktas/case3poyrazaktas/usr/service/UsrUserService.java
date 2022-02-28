@@ -7,6 +7,7 @@ import com.poyrazaktas.case3poyrazaktas.usr.dto.UsrUserDto;
 import com.poyrazaktas.case3poyrazaktas.usr.dto.UsrUserSaveReqDto;
 import com.poyrazaktas.case3poyrazaktas.usr.dto.UsrUserUpdateReqDto;
 import com.poyrazaktas.case3poyrazaktas.usr.entity.UsrUser;
+import com.poyrazaktas.case3poyrazaktas.usr.enums.UsrUserErrorMessage;
 import com.poyrazaktas.case3poyrazaktas.usr.service.entityservice.UsrUserEntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class UsrUserService {
 
     public UsrUserDto get(Long id){
 
-        UsrUser user = userEntityService.findById(id).orElseThrow(()-> new ItemNotFoundException("User not found!"));
+        UsrUser user = userEntityService.findById(id).orElseThrow(()-> new ItemNotFoundException(UsrUserErrorMessage.ITEM_NOT_FOUND));
 
         return UsrUserMapper.INSTANCE.convertToUserDto(user);
     }
@@ -49,7 +50,7 @@ public class UsrUserService {
     }
 
     public void delete(Long id, UsrUserDeleteReqDto userDeleteReqDto){
-        UsrUser user = userEntityService.findById(id).orElseThrow(()-> new ItemNotFoundException("User not found!"));
+        UsrUser user = userEntityService.findById(id).orElseThrow(()-> new ItemNotFoundException(UsrUserErrorMessage.ITEM_NOT_FOUND));
         checkIfUserPhoneIsMatches(user,userDeleteReqDto);
         userEntityService.delete(user);
 
@@ -62,7 +63,7 @@ public class UsrUserService {
     }
 
     public UsrUserDto findByUserName(String userName){
-        UsrUser user = userEntityService.findByUserName(userName).orElseThrow(()-> new ItemNotFoundException("User not found!"));
+        UsrUser user = userEntityService.findByUserName(userName).orElseThrow(()-> new ItemNotFoundException(UsrUserErrorMessage.ITEM_NOT_FOUND));
         return UsrUserMapper.INSTANCE.convertToUserDto(user);
     }
 
