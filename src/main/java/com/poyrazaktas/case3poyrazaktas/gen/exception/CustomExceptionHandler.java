@@ -1,5 +1,6 @@
 package com.poyrazaktas.case3poyrazaktas.gen.exception;
 
+import com.poyrazaktas.case3poyrazaktas.gen.dto.RestResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,13 +18,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public final ResponseEntity<Object> handleUnhandledExceptions(Exception ex, WebRequest webRequest){
         CustomExceptionResponse customExceptionResponse = getCustomExceptionResponse(ex.getMessage(), webRequest);
-        return new ResponseEntity<>(customExceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        RestResponse restResponse = RestResponse.error(customExceptionResponse);
+        return new ResponseEntity<>(restResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     public final ResponseEntity<Object> handleItemNotFoundException(ItemNotFoundException ex, WebRequest webRequest){
         CustomExceptionResponse customExceptionResponse = getCustomExceptionResponse(ex.getErrorMessage().getMessage(), webRequest);
-        return new ResponseEntity<>(customExceptionResponse,HttpStatus.NOT_FOUND);
+        RestResponse restResponse = RestResponse.error(customExceptionResponse);
+        return new ResponseEntity<>(restResponse,HttpStatus.NOT_FOUND);
     }
 
     private CustomExceptionResponse getCustomExceptionResponse(String errorMessage, WebRequest webRequest) {

@@ -2,6 +2,7 @@ package com.poyrazaktas.case3poyrazaktas.rev.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
